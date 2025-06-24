@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="Rock-Paper-Scissors-Game.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  </head>
+
+  <body>
+    <p class="title">Rock Paper Scissors</p>
+
+    <!--FrontInterface-->
+
+    <div id="frontInterface">
+      <div class="intro">
+        <p>Hey! This is Eva, currently studying CSE at KUET.</p>
+        <p> I've created my version of Rock-Paper-Scissors.</p>
+        <p> Hope you'll enjoy the game.🎈</p>
+      </div>
+
+      <p class="option">Select One!</p>
+
+      <div class="selectOne">
+        <button class="select" id="singlePlayerBtn"> Single Player</button>
+        <button class="select" id="multiplayerBtn"> Multiplayer</button>
+      </div>
+      <div class="rule">
+        <button class="rules" id="ruleId"> Help </button>
+      </div>
+    </div>
+
+    <!--RulesInterface-->
+
+    <div id="ruleInterface" style="display: none;">
+      <div id="explainGame">
+        <h2 class="headline">🎮 How The Game Works:</h2>
+        <p>1. 👥 Two players join the same room by entering a shared Room Code and selecting their roles (Player 1 or Player 2).</p>
+        <p>2. Player 1 always starts with “Your Turn”☺️, Player 2 sees “Opponent’s Turn😒.”</p>
+        <p>3. 📨 Each player selects a move: Rock, Paper, or Scissors.</p>
+        <p>4. After both players have submitted, they can see their own result.🏆</p>
+      </div>
+      <div id="explainRules">
+        <h2 class="headline">📄 Rules:</h2>
+        <p>✊Rock beats Scissors✌️</p>
+        <p>✌️Scissors beats Paper✋</p>
+        <p>✋Paper beats Rock✊</p>
+      </div>
+    </div>
+
+    <!--InputInterface-->
+
+    <div class="input-container" id="setup-container" style="display: none">
+      <p class="msg">🗣️: Enter a random room code and select your role.</p>
+      <div><input type="text" id="roomIdInput" placeholder="Enter Room Code"></div>
+      <div><select id="selectPlayerId" style="cursor: pointer"> 
+        <option value="player1"> Player 1</option>
+        <option value="player2"> Player 2</option>
+      </select></div>
+      <div><button onclick="playClickSound(); startGame();" id="startGame"> Start Game </button></div>
+    </div>
+
+    <!--MultiPlayerInterface-->
+
+    <div id="game-container" class="hidden">
+      <div class="container">
+        <button onclick="playClickSound(); submitMove('rock');" class="move-button">
+          <img src="rock.png" class="move-icon choice">
+        </button>
+        <button onclick="playClickSound(); submitMove('paper');" class="move-button">
+          <img src="paper.png" class="move-icon choice">
+        </button>
+        <button onclick="playClickSound(); submitMove('scissors');" class="move-button">
+          <img src="scissors.png" class="move-icon choice">
+        </button>
+      </div>
+
+      <p class="js-result result"></p>
+      <p class="js-move container"></p>
+      <p class="js-score score"></p>
+      <p class="js-status status"></p>
+
+      <div class="container reset-button">
+        <button onclick="resetScore();" class="reset">Reset Score</button>
+      </div>
+    </div>
+
+    <!--SinglePlayerInterface-->
+
+    <div id="single-game-container" class="hidden">
+      <div class="container">
+        <button onclick="playClickSound(); playGame('rock');" class="move-button">
+          <img src="rock.png" class="move-icon choice">
+        </button>
+
+        <button onclick="playClickSound(); playGame('paper');" class="move-button"> 
+          <img src="paper.png" class="move-icon choice">
+        </button>
+
+        <button onclick="playClickSound(); playGame('scissors');" class="move-button"> 
+          <img src="scissors.png" class="move-icon choice"> 
+        </button>
+
+      </div>
+
+      <p class="single-js-result result"></p>
+      <p class="single-js-move container"></p>
+      <p class="single-js-score score"></p>
+
+      <div class="container reset-button">
+        <button onclick="playClickSound();
+          singleScore.wins=0;
+          singleScore.losses=0;
+          singleScore.ties=0;
+          localStorage.removeItem('singleScore');
+          singleUpdateScore();
+        " class="reset"> Reset Score </button>
+      </div>
+    </div>
+
+    <audio id="winSound" src="win-sound.mp3"></audio>
+    <audio id="loseSound" src="lose-sound.mp3"></audio>
+    <audio id="tieSound" src="tie-sound.mp3"></audio>
+    <audio id="clickSound" src="click-sound.mp3"></audio>
+
+    <script src="Rock-Paper-Scissors-Game.js"></script>
+
+  </body>
+</html>
